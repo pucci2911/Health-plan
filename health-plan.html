@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30-Day Reset — May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F0E8;
+    --surface: #FDFAF4;
+    --surface2: #EDE8DC;
+    --ink: #1C1A15;
+    --ink2: #5C5849;
+    --ink3: #9C9788;
+    --sardine: #2D6A4F;
+    --sardine-light: #D8F3DC;
+    --sardine-mid: #74C69D;
+    --keto: #1B4332;
+    --keto-light: #E9F5E1;
+    --fast: #6B3FA0;
+    --fast-light: #EDE0FF;
+    --accent: #C9791E;
+    --accent-light: #FFF3E0;
+    --warn: #9B2226;
+    --warn-light: #FFE4E1;
+    --border: rgba(28,26,21,0.1);
+    --border2: rgba(28,26,21,0.06);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 3rem 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 40%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.025);
+  }
+  .header-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 0.75rem;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+  }
+  .header-meta {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+  .meta-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    border: 1px solid rgba(245,240,232,0.2);
+    border-radius: 100px;
+    color: rgba(245,240,232,0.75);
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--ink2);
+    font-family: 'DM Mono', monospace;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN ── */
+  main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+  /* ── WEEK BLOCK ── */
+  .week {
+    margin-bottom: 2.5rem;
+  }
+  .week-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 0.75rem;
+    padding-left: 2px;
+  }
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+
+  /* ── DAY CARD ── */
+  .day {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 10px 12px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+    min-height: 100px;
+  }
+  .day:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(28,26,21,0.08); }
+  .day.active { box-shadow: 0 0 0 2px var(--accent); }
+
+  .day-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ink3);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .day-date { font-weight: 500; }
+
+  .day-type {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 5px;
+  }
+
+  .day-preview {
+    font-size: 10.5px;
+    color: var(--ink2);
+    line-height: 1.4;
+  }
+
+  /* Type colors */
+  .day.sardine { border-top: 3px solid var(--sardine); }
+  .day.sardine .day-type { color: var(--sardine); }
+  .day.keto { border-top: 3px solid #52796F; }
+  .day.keto .day-type { color: #52796F; }
+  .day.transition { border-top: 3px solid var(--accent); }
+  .day.transition .day-type { color: var(--accent); }
+  .day.empty { background: transparent; border-color: transparent; cursor: default; }
+  .day.empty:hover { transform: none; box-shadow: none; }
+
+  /* ── DETAIL PANEL ── */
+  #detail {
+    position: fixed;
+    right: 0; top: 0;
+    width: min(420px, 100vw);
+    height: 100vh;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+  }
+  #detail.open { transform: translateX(0); }
+
+  .detail-header {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    z-index: 1;
+  }
+  .detail-close {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 32px; height: 32px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink2);
+    font-size: 16px;
+    margin-bottom: 0.75rem;
+    transition: background 0.15s;
+  }
+  .detail-close:hover { background: var(--surface2); }
+
+  .detail-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ink3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .detail-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .detail-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-top: 8px;
+    letter-spacing: 0.03em;
+  }
+
+  .detail-body { padding: 1.25rem 1.5rem; flex: 1; }
+
+  .section {
+    margin-bottom: 1.5rem;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 0.5rem;
+  }
+
+  .meal-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border2);
+  }
+  .meal-item:last-child { border-bottom: none; }
+  .meal-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ink3);
+    min-width: 60px;
+    padding-top: 1px;
+  }
+  .meal-desc { font-size: 13px; color: var(--ink); line-height: 1.5; }
+
+  .supp-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .supp-item {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .supp-item b { font-weight: 600; }
+
+  .note-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .warn-note {
+    background: var(--warn-light);
+    border-left-color: var(--warn);
+  }
+
+  .benefit-list { display: flex; flex-direction: column; gap: 5px; }
+  .benefit-item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    font-size: 12px;
+    color: var(--ink2);
+    line-height: 1.4;
+  }
+  .benefit-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--sardine-mid); margin-top: 5px; flex-shrink: 0; }
+
+  /* ── OVERLAY ── */
+  #overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(28,26,21,0.3);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  #overlay.open { opacity: 1; pointer-events: all; }
+
+  /* ── SUMMARY BAR ── */
+  .summary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+  .summary-item { }
+  .summary-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .summary-lbl {
+    font-size: 12px;
+    color: var(--ink3);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── PRINT / MOBILE ── */
+  @media (max-width: 640px) {
+    .week-grid { grid-template-columns: repeat(3, 1fr); }
+    #detail { width: 100vw; }
+    header { padding: 2rem 1rem; }
+  }
+
+  @media print {
+    #detail, #overlay, .legend { display: none !important; }
+    .day { break-inside: avoid; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .week { animation: fadeUp 0.4s ease both; }
+  .week:nth-child(1) { animation-delay: 0.05s; }
+  .week:nth-child(2) { animation-delay: 0.1s; }
+  .week:nth-child(3) { animation-delay: 0.15s; }
+  .week:nth-child(4) { animation-delay: 0.2s; }
+  .week:nth-child(5) { animation-delay: 0.25s; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-label">Personal health protocol · Serbia</div>
+    <h1>30-Day Reset<br><em>May – June 2026</em></h1>
+    <div class="header-meta">
+      <span class="meta-chip">Starts 4 May 2026</span>
+      <span class="meta-chip">5-day sardine fast</span>
+      <span class="meta-chip">Healthy keto + IF</span>
+      <span class="meta-chip">Click any day for detail</span>
+    </div>
+  </div>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--sardine);"></div>Sardine fast</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--accent);"></div>Transition</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#52796F;"></div>Keto + IF</div>
+</div>
+
+<main>
+  <div class="summary">
+    <div class="summary-item">
+      <div class="summary-val">30</div>
+      <div class="summary-lbl">Total days</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-val">5</div>
+      <div class="summary-lbl">Sardine fast days</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-val">3→2</div>
+      <div class="summary-lbl">Meals → then 16:8 IF</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-val">~0</div>
+      <div class="summary-lbl">Carbs (fast days)</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-val">2.5L</div>
+      <div class="summary-lbl">Water daily</div>
+    </div>
+  </div>
+
+  <div id="calendar"></div>
+</main>
+
+<div id="overlay" onclick="closeDetail()"></div>
+<div id="detail">
+  <div class="detail-header">
+    <button class="detail-close" onclick="closeDetail()">✕</button>
+    <div class="detail-date" id="d-date"></div>
+    <div class="detail-title" id="d-title"></div>
+    <span class="detail-badge" id="d-badge"></span>
+  </div>
+  <div class="detail-body" id="d-body"></div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+
+const SARDINE_SUPPLEMENTS = `
+  <div class="supp-list">
+    <div class="supp-item"><b>Elektroliti</b> — potassijum + magnezijum + natrijum. Apoteka / DM drogerija. Uzmi ujutru sa prvom konzervicom.</div>
+    <div class="supp-item"><b>B Komplex (sa B1)</b> — B1 se skladišti samo 4 dana. Apoteka, "B komplex" ili "B vitamin kompleks". Uzmi ujutru.</div>
+    <div class="supp-item"><b>Vitamin D3</b> — 1000–2000 IU. Svaka apoteka, jeftin. Uz obrok.</div>
+    <div class="supp-item"><b>Vitamin C</b> — 1000mg. DM, Benu, Lilly apoteka.</div>
+    <div class="supp-item"><b>Magnezijum (zasebno)</b> — ako elektrolit mix nema dovoljno. "Magnezijum B6" u apoteci. Uveče — poboljšava san.</div>
+  </div>`;
+
+const KETO_SUPPLEMENTS = `
+  <div class="supp-list">
+    <div class="supp-item"><b>Elektroliti</b> — nastavi svaki dan. Posebno magnezijum i kalijum.</div>
+    <div class="supp-item"><b>Vitamin D3</b> — nastavi svaki dan.</div>
+    <div class="supp-item"><b>B Komplex</b> — nastavi tokom celog meseca.</div>
+  </div>`;
+
+const SARDINE_MEALS = (day) => {
+  const notes = {
+    1: "Danas telo sagoreva glikogen iz jetre — gubitak vode je normalan. Uzmi elektrolite!",
+    2: "Možda ćeš žudeti za raznovrsnošću (čips, začinjena hrana) — to je dopaminska glad, ne prava glad. Istraji!",
+    3: "Mozaini maglac nestaje. Ketoni su u punom pogonu — fokus i jasnoća se vraćaju.",
+    4: "Koža počinje da izgleda bolje. Zglobovi su labaviji. Taurin iz sardina podiže GABA — biće te mirni.",
+    5: "Verovatno nećeš hteti da staneš. Nastavi još jedan dan ako osećaš dobro, ili pređi na tranziciju.",
+  };
+  return `
+  <div class="section">
+    <div class="section-label">Obroci — 3 konzerve dnevno</div>
+    <div class="meal-item">
+      <div class="meal-time">Jutro</div>
+      <div class="meal-desc">1 konzerva sardina u maslinovom ulju (sa kostima i kožom)<br><span style="font-size:11px;color:var(--ink3)">+ elektroliti + B komplex + Vitamin D + C</span></div>
+    </div>
+    <div class="meal-item">
+      <div class="meal-time">Podne</div>
+      <div class="meal-desc">1 konzerva sardina u maslinovom ulju</div>
+    </div>
+    <div class="meal-item">
+      <div class="meal-time">Uveče</div>
+      <div class="meal-desc">1 konzerva sardina u maslinovom ulju<br><span style="font-size:11px;color:var(--ink3)">+ magnezijum pre spavanja</span></div>
+    </div>
+    <div class="meal-item">
+      <div class="meal-time">Piće</div>
+      <div class="meal-desc">Voda 2.5L+, čaj, kafa (kapljica kajmaka oke)</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">Suplementi danas</div>
+    ${SARDINE_SUPPLEMENTS}
+  </div>
+  <div class="section">
+    <div class="note-box">${notes[day] || ''}</div>
+  </div>`;
+};
+
+const TRANSITION_MEALS = (subday) => {
+  if (subday === 1) return `
+  <div class="section">
+    <div class="section-label">Tranzicija — dan 1 (9. maj)</div>
+    <div class="meal-item"><div class="meal-time">Jutro</div><div class="meal-desc">Mala zelena salata, maslinovo ulje, limun. Polako jedi.</div></div>
+    <div class="meal-item"><div class="meal-time">2–3h</div><div class="meal-desc">1–2 kuvana jaja ili šaka badema/oraha</div></div>
+    <div class="meal-item"><div class="meal-time">Uveče</div><div class="meal-desc">Pola avokada. Ništa više.</div></div>
+    <div class="meal-item"><div class="meal-time">Piće</div><div class="meal-desc">Voda 2.5L+, čaj</div></div>
+  </div>
+  <div class="section">
+    <div class="note-box warn-note"><b>NE radi ovo:</b> Nema ugljenih hidrata, nema šećera, nema velikih obroka. Tvoj stomak je mirovao 5 dana — pun obrok bi bio katastrofa za varenje.</div>
+  </div>
+  <div class="section">
+    <div class="section-label">Suplementi</div>${KETO_SUPPLEMENTS}
+  </div>`;
+  
+  return `
+  <div class="section">
+    <div class="section-label">Tranzicija — dan 2 (10. maj)</div>
+    <div class="meal-item"><div class="meal-time">Jutro</div><div class="meal-desc">2–3 jaja (kajganija na maslacu), malo zelene salate</div></div>
+    <div class="meal-item"><div class="meal-time">Podne</div><div class="meal-desc">Losos ili piletina (150g) + povrće (brokoli, tikvice, špinat)</div></div>
+    <div class="meal-item"><div class="meal-time">Uveče</div><div class="meal-desc">Avokado + jaja / orasi</div></div>
+  </div>
+  <div class="section">
+    <div class="note-box">Sutra počinješ sa punim keto + IF protokolom. Skoro si tu!</div>
+  </div>
+  <div class="section">
+    <div class="section-label">Suplementi</div>${KETO_SUPPLEMENTS}
+  </div>`;
+};
+
+const KETO_MEALS = (weekNum) => {
+  const windows = ["12:00–20:00", "13:00–21:00", "12:00–20:00"];
+  const win = windows[Math.min(weekNum - 1, 2)];
+  const examples = [
+    { b: "Kajganija na maslacu, avokado, zelena salata", l: "Piletina / losos + brokoli + maslinovo ulje", d: "Jaja / govedina + povrće + orasi" },
+    { b: "Jaja + slanina + špinat", l: "Sardine / tuna + zelena salata", d: "Meso + povrće. Bez skroba." },
+    { b: "Smoothie (avokado, spanać, kokosko mleko)", l: "Jagnjetina / piletina + povrće", d: "Jaja + sir + maslac povrće" },
+  ];
+  const ex = examples[Math.min(weekNum - 1, 2)];
+  return `
+  <div class="section">
+    <div class="section-label">Intermittent fasting — 16:8 prozor</div>
+    <div class="note-box">Jedi samo između <b>${win}</b>. Ujutru samo voda, čaj ili crna kafa. Gladovanje 16h.</div>
+  </div>
+  <div class="section">
+    <div class="section-label">Obroci (keto — bez ugljenih hidrata)</div>
+    <div class="meal-item"><div class="meal-time">1. obrok</div><div class="meal-desc">${ex.b}</div></div>
+    <div class="meal-item"><div class="meal-time">2. obrok</div><div class="meal-desc">${ex.l}</div></div>
+    <div class="meal-item"><div class="meal-time">3. obrok</div><div class="meal-desc">${ex.d}</div></div>
+    <div class="meal-item"><div class="meal-time">Zabranjeno</div><div class="meal-desc" style="color:var(--warn)">Hleb, pasta, pirinač, krompir, šećer, voće (osim bobičastog), alkohol</div></div>
+  </div>
+  <div class="section">
+    <div class="section-label">Suplementi</div>${KETO_SUPPLEMENTS}
+  </div>
+  <div class="section">
+    <div class="benefit-list">
+      <div class="benefit-item"><div class="benefit-dot"></div>Nastavi da piješ 2.5L vode dnevno</div>
+      <div class="benefit-item"><div class="benefit-dot"></div>Ako si gladan pre prozora — popij čašu vode ili čaj</div>
+      <div class="benefit-item"><div class="benefit-dot"></div>Kretanje: šetnja 30min dnevno je idealna</div>
+    </div>
+  </div>`;
+};
+
+// ── PLAN DATA ─────────────────────────────────────────────────────────────────
+// Days start May 4 (Sunday). Week starts Monday, so May 4 is day 7 of week 1 visually.
+
+const days = [];
+
+function addDay(date, type, title, phase, bodyFn) {
+  days.push({ date, type, title, phase, bodyFn });
+}
+
+// May 4–8: Sardine Fast (days 1–5)
+const sardineStart = new Date(2026, 4, 4); // May = index 4
+for (let i = 0; i < 5; i++) {
+  const d = new Date(sardineStart);
+  d.setDate(d.getDate() + i);
+  const n = i + 1;
+  const titles = ["Dan 1 — prebacivanje počinje", "Dan 2 — teški dan", "Dan 3 — mozak online", "Dan 4 — spoljne promene", "Dan 5 — svi benefiti"];
+  addDay(d, 'sardine', titles[i], `Sardine Fast — Dan ${n}`, () => SARDINE_MEALS(n));
+}
+
+// May 9–10: Transition
+addDay(new Date(2026,4,9), 'transition', 'Tranzicija — dan 1', 'Tranzicija', () => TRANSITION_MEALS(1));
+addDay(new Date(2026,4,10), 'transition', 'Tranzicija — dan 2', 'Tranzicija', () => TRANSITION_MEALS(2));
+
+// May 11 – June 2: Keto + IF (weeks 1–3)
+const ketoStart = new Date(2026, 4, 11);
+for (let i = 0; i < 23; i++) {
+  const d = new Date(ketoStart);
+  d.setDate(d.getDate() + i);
+  const weekNum = Math.floor(i / 7) + 1;
+  addDay(d, 'keto', `Keto + 16:8 IF`, `Nedelja ${weekNum}`, () => KETO_MEALS(weekNum));
+}
+
+// ── CALENDAR RENDER ─────────────────────────────────────────────────────────
+
+function formatDate(d) {
+  return d.toLocaleDateString('sr-RS', { day: 'numeric', month: 'short' });
+}
+function formatDateLong(d) {
+  return d.toLocaleDateString('sr-RS', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
+function dayOfWeek(d) { // 0=Mon
+  return (d.getDay() + 6) % 7;
+}
+
+function buildCalendar() {
+  // May 4 is Monday — start exactly there, no back-padding needed
+  const cal = document.getElementById('calendar');
+  const dayMap = {};
+  days.forEach((d, i) => { dayMap[d.date.toDateString()] = { ...d, idx: i }; });
+
+  let cur = new Date(2026, 4, 4); // May 4 = Monday, week starts here
+  const lastDay = days[days.length - 1].date;
+
+  let weekNum = 0;
+  while (cur <= lastDay) {
+    weekNum++;
+    const weekEl = document.createElement('div');
+    weekEl.className = 'week';
+
+    const weekEnd = new Date(+cur + 6 * 86400000);
+    const label = document.createElement('div');
+    label.className = 'week-label';
+    label.textContent = `Nedelja ${weekNum} — ${formatDate(cur)} – ${formatDate(weekEnd)}`;
+    weekEl.appendChild(label);
+
+    const grid = document.createElement('div');
+    grid.className = 'week-grid';
+
+    for (let d = 0; d < 7; d++) {
+      const cell = document.createElement('div');
+      const key = cur.toDateString();
+      const entry = dayMap[key];
+
+      if (entry) {
+        cell.className = `day ${entry.type}`;
+        const isToday = cur.toDateString() === new Date().toDateString();
+        const capturedDate = new Date(cur);
+
+        const preview = {
+          sardine: '3 konzerve · elektroliti · voda',
+          transition: 'Postepeni povratak hrani',
+          keto: '16:8 IF · meso/riba · povrće',
+        }[entry.type];
+
+        cell.innerHTML = `
+          <div class="day-num">
+            <span class="day-date">${cur.getDate()}</span>
+            ${isToday ? '<span style="font-size:9px;background:var(--accent);color:white;padding:1px 5px;border-radius:4px;">danas</span>' : ''}
+          </div>
+          <div class="day-type">${entry.phase}</div>
+          <div class="day-preview">${preview}</div>`;
+        cell.addEventListener('click', () => openDetail(entry, capturedDate));
+      } else if (cur <= lastDay) {
+        cell.className = 'day empty';
+        cell.innerHTML = `<div class="day-num"><span class="day-date" style="color:var(--ink3)">${cur.getDate()}</span></div>`;
+      } else {
+        cell.className = 'day empty';
+      }
+
+      grid.appendChild(cell);
+      cur.setDate(cur.getDate() + 1);
+    }
+
+    weekEl.appendChild(grid);
+    cal.appendChild(weekEl);
+  }
+}
+
+// ── DETAIL PANEL ─────────────────────────────────────────────────────────────
+
+let currentCell = null;
+
+function openDetail(entry, date) {
+  if (currentCell) currentCell.classList.remove('active');
+  // Find cell and mark active
+  document.querySelectorAll('.day').forEach(el => {
+    if (el.querySelector('.day-date') && parseInt(el.querySelector('.day-date').textContent) === date.getDate()) {
+      // rough match (good enough for single month)
+      const preview = { sardine: '3 konzerve', transition: 'Postepeni', keto: '16:8 IF' }[entry.type];
+      if (el.querySelector('.day-preview') && el.querySelector('.day-preview').textContent.includes(preview.split('·')[0].trim())) {
+        el.classList.add('active');
+        currentCell = el;
+      }
+    }
+  });
+
+  document.getElementById('d-date').textContent = formatDateLong(date);
+  document.getElementById('d-title').textContent = entry.title;
+
+  const badge = document.getElementById('d-badge');
+  const badgeStyles = {
+    sardine: `background:var(--sardine-light);color:var(--sardine)`,
+    transition: `background:var(--accent-light);color:var(--accent)`,
+    keto: `background:var(--keto-light);color:var(--keto)`,
+  };
+  badge.style.cssText = badgeStyles[entry.type];
+  badge.textContent = entry.phase;
+
+  document.getElementById('d-body').innerHTML = entry.bodyFn();
+
+  document.getElementById('detail').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  if (currentCell) { currentCell.classList.remove('active'); currentCell = null; }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+
+buildCalendar();
+</script>
+</body>
+</html>
